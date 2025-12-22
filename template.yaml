@@ -12,7 +12,7 @@ metadata:
     - clean-architecture
 
 spec:
-  owner: user:guest
+  owner: user:davyyelor
   type: service
 
   #############################################
