@@ -16,4 +16,4 @@ spec:
   type: mobile-app
   lifecycle: experimental
   owner: ${{ values.owner }}
-  system: mobile-platform
+  system: openshift
