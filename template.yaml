@@ -105,6 +105,61 @@ spec:
         repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
         catalogInfoPath: /catalog-info.yaml
 
+    - id: render-mbp-config
+      action: [fetch:template](/backstage/scaffolder-actions/fetch-template/)
+      name: Render multibranch pipeline config
+      input:
+        url: ./jenkins-templates/multibranch-git
+        targetPath: ./jenkins
+        values:
+          repoUrl: ${{ parameters.gitlabRepoUrl }}
+          includes: "main feature/*"
+          scriptPath: Jenkinsfile
+  
+    - id: create-multibranch-job
+      action: jenkins:job:create
+      input:
+        serverUrl: https://jenkins.services.example.net
+        jobName: ${{ parameters.serviceName }}-mbp
+        configPath: ./jenkins/config.xml
+
+    - id: render-jenkinsfile
+      name: Generando Jenkinsfile
+      action: fetch:template
+      input:
+        url: ./jenkins-templates/android-pipelines
+        targetPath: .
+
+    - id: create-jenkins-job
+      name: Crear job Jenkins Android
+      action: jenkins:job:create
+      input:
+        serverUrl: http://localhost:8080
+        jobName: ${{ parameters.appName }}-android-build
+        configXml: |
+          <flow-definition plugin="workflow-job">
+            <description>Android Kotlin build pipeline</description>
+            <definition class="org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition">
+              <scm class="hudson.plugins.git.GitSCM">
+                <configVersion>2</configVersion>
+                <userRemoteConfigs>
+                  <hudson.plugins.git.UserRemoteConfig>
+                    <url>${{ steps.publish.output.remoteUrl }}</url>
+                  </hudson.plugins.git.UserRemoteConfig>
+                </userRemoteConfigs>
+                <branches>
+                  <hudson.plugins.git.BranchSpec>
+                    <name>*/main</name>
+                  </hudson.plugins.git.BranchSpec>
+                </branches>
+              </scm>
+              <scriptPath>Jenkinsfile</scriptPath>
+            </definition>
+            <triggers/>
+          </flow-definition>
+
+
+
   #############################################
   #                  OUTPUTS                  #
   #############################################
