@@ -1,0 +1,19 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: ${{ values.appName | lower }}
+  title: ${{ values.appName }}
+  description: ${{ values.description }}
+  tags:
+    - android
+    - kotlin
+    - mobile
+  annotations:
+    github.com/project-slug: davyyelor/${{ values.appName }}
+    backstage.io/techdocs-ref: dir:.
+
+spec:
+  type: mobile-app
+  lifecycle: experimental
+  owner: ${{ values.owner }}
+  system: mobile-platform
