@@ -111,7 +111,7 @@ spec:
       input:
         serverUrl: http://localhost:8080
         jobName: ${{ parameters.appName }}-android-build
-        configXml: |
+        jobXml: |
           <flow-definition plugin="workflow-job">
             <description>Android Kotlin build pipeline</description>
             <definition class="org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition">
