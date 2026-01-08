@@ -110,7 +110,7 @@ spec:
       action: jenkins:job:create
       input:
         serverUrl: http://localhost:8080
-        jobName: ${{ parameters.appName }}-android-build
+        jobName: backstage/${{ parameters.appName }}-android-build
         jobXml: |
           <flow-definition plugin="workflow-job">
             <description>Android Kotlin build pipeline</description>
